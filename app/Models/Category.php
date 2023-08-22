@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+
+    function projects() {
+        return $this->hasMany(Project::class);
+    }
 }
