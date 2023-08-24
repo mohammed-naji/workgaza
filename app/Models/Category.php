@@ -9,6 +9,8 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     function projects() {
         return $this->hasMany(Project::class);
     }

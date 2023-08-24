@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 class AdminController extends Controller
 {
     function dashboard($lang = 'en') {
-        App::setlocale($lang);
+        // App::setlocale($lang);
         return view('admin.dashboard');
     }
 }
