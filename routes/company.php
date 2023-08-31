@@ -10,6 +10,7 @@ Route::prefix('company')->name('company.')->group(function() {
     Route::redirect('/', '/company/dashboard');
     Route::get('/dashboard', [CompanyController:: class, 'dashboard'])->name('dashboard');
 
+    Route::get('projects/status/{project?}', [ProjectController::class, 'edit_status'])->name('projects.edit_status');
     Route::resource('projects', ProjectController::class);
 });
 

@@ -32,12 +32,13 @@
       Add new Project
     </div>
     <div class="card-body">
-        <form action="{{ route('company.projects.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('company.projects.update', $project) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('put')
 
             <div class="mb-3">
                 <label>Name</label>
-                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $project->name) }}">
                 @error('name')
                     <small class="invalid-feedback">{{ $message }}</small>
                 @enderror
@@ -49,11 +50,12 @@
                 @error('image')
                     <small class="invalid-feedback">{{ $message }}</small>
                 @enderror
+                <img width="80" src="{{ asset('images/'.$project->image) }}" alt="">
             </div>
 
             <div class="mb-3">
                 <label>Content</label>
-                <textarea name="content" class="form-control @error('content') is-invalid @enderror" rows="5">{{ old('content') }}</textarea>
+                <textarea name="content" class="form-control @error('content') is-invalid @enderror" rows="5">{{ old('content', $project->content) }}</textarea>
                 @error('content')
                     <small class="invalid-feedback">{{ $message }}</small>
                 @enderror
@@ -61,7 +63,7 @@
 
             <div class="mb-3">
                 <label>Price</label>
-                <input type="number" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}">
+                <input type="number" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $project->price) }}">
                 @error('price')
                     <small class="invalid-feedback">{{ $message }}</small>
                 @enderror
@@ -69,7 +71,7 @@
 
             <div class="mb-3">
                 <label>Duration</label>
-                <input type="text" name="duration" class="form-control @error('duration') is-invalid @enderror" value="{{ old('duration') }}">
+                <input type="text" name="duration" class="form-control @error('duration') is-invalid @enderror" value="{{ old('duration', $project->duration) }}">
                 @error('duration')
                     <small class="invalid-feedback">{{ $message }}</small>
                 @enderror
@@ -80,25 +82,25 @@
                 <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
                     <option value=""> -- Select Category -- </option>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option @selected($project->category_id == $category->id) value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
                 @error('category_id')
                     <small class="invalid-feedback">{{ $message }}</small>
                 @enderror
             </div>
-
             <div class="mb-3">
                 <label>Skills</label>
                 <select class="select-skills form-control @error('skills') is-invalid @enderror" name="skills[]" multiple="multiple">
                     @foreach ($skills as $skill)
-                        <option value="{{ $skill->id }}">{{ $skill->name }}</option>
+                        <option @selected($project->skills->find($skill->id)) value="{{ $skill->id }}">{{ $skill->name }}</option>
                     @endforeach
                 </select>
                 @error('skills')
                     <small class="invalid-feedback">{{ $message }}</small>
                 @enderror
             </div>
+
             <button class="btn btn-success"><i class="fas fa-save"></i> Add</button>
         </form>
     </div>
