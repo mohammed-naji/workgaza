@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -36,15 +37,23 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ];
+
+        if($request->guard == 'web') {
+            $user = User::create($data);
+        }
+
+        if($request->guard == 'company') {
+            $user = Company::create($data);
+        }
 
         event(new Registered($user));
 
-        Auth::login($user);
+        Auth::guard($request->guard)->login($user);
 
         return redirect(RouteServiceProvider::HOME);
     }

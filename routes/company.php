@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::prefix('company')->name('company.')->group(function() {
+Route::prefix('company')->name('company.')->middleware('auth:company')->group(function() {
     Route::redirect('/', '/company/dashboard');
     Route::get('/dashboard', [CompanyController:: class, 'dashboard'])->name('dashboard');
 

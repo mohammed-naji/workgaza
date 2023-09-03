@@ -21,6 +21,22 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
+     * Display the company login view.
+     */
+    public function create_company(): View
+    {
+        return view('auth.login_company');
+    }
+
+    /**
+     * Display the company login view.
+     */
+    public function create_admin(): View
+    {
+        return view('auth.login_admin');
+    }
+
+    /**
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse

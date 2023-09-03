@@ -8,7 +8,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 // Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
 Route::prefix(LaravelLocalization::setLocale())->group(function() {
 
-    Route::prefix('admin')->name('admin.')->group(function() {
+    Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function() {
         Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
         Route::resource('categories', CategoryController::class);

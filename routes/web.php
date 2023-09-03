@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,17 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+
+    if(Auth::guard('admin')->check()) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if(Auth::guard('company')->check()) {
+        return redirect()->route('company.dashboard');
+    }
+
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth:web,admin,company', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

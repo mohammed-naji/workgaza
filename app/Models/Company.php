@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Company extends Model
+class Company extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $guarded = [];
 
@@ -29,5 +31,14 @@ class Company extends Model
 
     function payments() {
         return $this->hasMany(Payment::class);
+    }
+
+    function getImageAttribute($value) {
+        $src = asset('images/default.jpg');
+        if($value) {
+            $src = asset('images/'.$value);
+        }
+
+        return $src;
     }
 }
