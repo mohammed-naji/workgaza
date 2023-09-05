@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductApiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -39,3 +40,9 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Api Routes
+Route::get('products', [ProductApiController::class, 'index']);
+Route::get('weather', [ProductApiController::class, 'weather']);
+
+//
