@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductApiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -44,5 +45,14 @@ require __DIR__.'/auth.php';
 // Api Routes
 Route::get('products', [ProductApiController::class, 'index']);
 Route::get('weather', [ProductApiController::class, 'weather']);
+
+// Notifications Route
+Route::get('send', [NotificationController::class, 'send']);
+Route::get('read', [NotificationController::class, 'read']);
+Route::get('read/{id}', [NotificationController::class, 'mark_read'])->name('mark_read');
+
+Route::get('adminpanel', function() {
+    return 'Admin Page';
+})->middleware('auth');
 
 //
