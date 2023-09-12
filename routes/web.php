@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FrontController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductApiController;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +18,8 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [FrontController::class, 'index'])->name('front.index');
+Route::get('/projects/{category?}', [FrontController::class, 'projects'])->name('front.projects');
 
 Route::get('/dashboard', function () {
 
@@ -53,6 +53,6 @@ Route::get('read/{id}', [NotificationController::class, 'mark_read'])->name('mar
 
 Route::get('adminpanel', function() {
     return 'Admin Page';
-})->middleware('auth');
+})->middleware('auth', 'is_admin');
 
 //

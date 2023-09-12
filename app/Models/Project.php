@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class Project extends Model
 {
@@ -29,5 +30,14 @@ class Project extends Model
 
     function user_project() {
         return $this->hasOne(UserProject::class)->withDefault();
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Project $project) {
+            if(file_exists(public_path('images/'.$project->image))) {
+                File::delete(public_path('images/'.$project->image));
+            }
+        });
     }
 }
