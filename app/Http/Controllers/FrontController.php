@@ -23,8 +23,6 @@ class FrontController extends Controller
             $projects = Project::latest('id')->paginate(10);
         }
 
-        dd($projects);
-
         return view('front.projects_list', compact('projects'));
     }
 }

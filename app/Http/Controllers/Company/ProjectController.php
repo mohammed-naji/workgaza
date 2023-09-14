@@ -27,7 +27,7 @@ class ProjectController extends Controller
         // ->where('company_id', 1)
         // ->toSql();
 
-        $projects = Project::with('category', 'skills')->latest('id')
+        $projects = Project::with('category', 'skills', 'payment')->latest('id')
         ->where('company_id', 1)
         ->paginate(2);
 

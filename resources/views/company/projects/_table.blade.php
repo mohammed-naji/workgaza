@@ -8,6 +8,7 @@
         <th>Status</th>
         <th>Skills</th>
         <th>Category</th>
+        <th>Payment</th>
         <th>Actions</th>
     </tr>
     @forelse ($projects as $project)
@@ -24,6 +25,17 @@
             @endforeach
         </td>
         <td>{{ $project->category->name }}</td>
+        <td>
+
+            @if ($project->payment)
+                <small>Payed at {{ $project->payment->created_at }}</small>
+            @else
+                <a class="btn btn-success btn-sm" href="{{ route('company.project_pay', $project->id) }}">Pay Now</a>
+            @endif
+
+
+
+        </td>
         <td>
             <a class="btn btn-primary btn-sm" href="{{ route('company.projects.edit', $project) }}"><i class="fas fa-edit"></i></a>
             <form class="d-inline" action="{{ route('company.projects.destroy', $project) }}" method="POST">
