@@ -11,11 +11,13 @@ class Role extends Model
 
     protected $guarded = [];
 
+    protected $with = ['permissions'];
+
     function admins() {
         return $this->hasMany(Admin::class);
     }
 
-    function permission() {
+    function permissions() {
         return $this->belongsToMany(Permission::class);
     }
 }

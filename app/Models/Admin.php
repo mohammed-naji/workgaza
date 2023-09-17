@@ -12,7 +12,9 @@ class Admin extends Authenticatable
 
     protected $guarded = [];
 
+    protected $with = ['role'];
+
     function role() {
-        return $this->belongsTo(Role::class)->withDefault();
+        return $this->belongsTo(Role::class);
     }
 }

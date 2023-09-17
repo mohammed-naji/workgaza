@@ -3,22 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
-class CategoryController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Gate::authorize('all_categories');
+        $roles = Role::latest('id')->paginate(20);
 
-        $categories = Category::latest('id')->paginate(20);
-
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.roles.index', compact('roles'));
     }
 
     /**
@@ -26,7 +24,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        $permissions = Permission::all();
+        return view('admin.roles.create', compact('permissions'));
     }
 
     /**
@@ -34,22 +33,25 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+
         // validation
         $request->validate([
-            'name' => 'required|unique:categories,name',
+            'name' => 'required|unique:roles,name',
         ]);
 
         // upload file
 
         // store database
-        Category::create([
+        $role = Role::create([
             'name' => $request->name
         ]);
 
+        $role->permissions()->sync($request->abilities);
+
         // redirect
         return redirect()
-        ->route('admin.categories.index')
-        ->with('msg', 'Category added successfully')
+        ->route('admin.roles.index')
+        ->with('msg', 'Role added successfully')
         ->with('type', 'success');
 
     }
@@ -65,32 +67,32 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(Role $role)
     {
-        return view('admin.categories.edit', compact('category'));
+        return view('admin.roles.edit', compact('role'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Role $role)
     {
         // validation
         $request->validate([
-            'name' => 'required|unique:categories,name',
+            'name' => 'required|unique:roles,name',
         ]);
 
         // upload file
 
         // store database
-        $category->update([
+        $role->update([
             'name' => $request->name
         ]);
 
         // redirect
         return redirect()
-        ->route('admin.categories.index')
-        ->with('msg', 'Category updated successfully')
+        ->route('admin.roles.index')
+        ->with('msg', 'Role updated successfully')
         ->with('type', 'info');
     }
 
@@ -99,10 +101,10 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        Category::destroy($id);
+        Role::destroy($id);
         return redirect()
-        ->route('admin.categories.index')
-        ->with('msg', 'Category deleted successfully')
+        ->route('admin.roles.index')
+        ->with('msg', 'Role deleted successfully')
         ->with('type', 'warning');
     }
 }

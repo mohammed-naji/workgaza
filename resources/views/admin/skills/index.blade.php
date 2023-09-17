@@ -1,10 +1,10 @@
 @extends('admin.master')
 
-@section('title', 'All Categories | ' . env('APP_NAME'))
+@section('title', 'All Skills | ' . env('APP_NAME'))
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800">All Categories</h1>
+<h1 class="h3 mb-4 text-gray-800">All Skills</h1>
 
 @if (session('msg'))
     <div class="alert alert-{{ session('type') }}">
@@ -20,27 +20,21 @@
         <th style="width: 15%">Actions</th>
     </tr>
 
-    @foreach ($categories as $category)
+    @foreach ($skills as $skill)
         <tr>
-            <td>{{ $category->id }}</td>
-            <td>{{ $category->name }}</td>
-            <td>{{ $category->created_at->format('M d, Y : h:i:s a') }}</td>
+            <td>{{ $skill->id }}</td>
+            <td>{{ $skill->name }}</td>
+            <td>{{ $skill->created_at->format('M d, Y : h:i:s a') }}</td>
             <td>
-                @can('edit_category')
-                    <a class="btn btn-dark btn-sm" href="{{ route('admin.categories.edit', $category) }}"><i class="fas fa-edit"></i></a>
-                @endcan
-
-                @can('delete_category')
-                <form class="d-inline" action="{{ route('admin.categories.destroy', $category->id) }}" method="POST">
+                <a class="btn btn-dark btn-sm" href="{{ route('admin.skills.edit', $skill) }}"><i class="fas fa-edit"></i></a>
+                <form class="d-inline" action="{{ route('admin.skills.destroy', $skill->id) }}" method="POST">
                     @csrf
                     @method('delete')
                     <button onclick="return confirm('Are you sure?!')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                 </form>
-                @endcan
-
             </td>
         </tr>
     @endforeach
 </table>
-{{ $categories->links() }}
+{{ $skills->links() }}
 @endsection
